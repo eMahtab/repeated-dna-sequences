@@ -25,7 +25,7 @@ Output: ["AAAAAAAAAA"]
 1. 1 <= s.length <= 105
 2. s[i] is either 'A', 'C', 'G', or 'T'.
 
-## Implementation
+## Implementation 1 :
 ```java
 class Solution {
     public List<String> findRepeatedDnaSequences(String s) {
@@ -43,6 +43,32 @@ class Solution {
              result.add(str);
         }
         return result;  
+    }
+}
+```
+
+## Implementation 1a :
+```java
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+        if(s == null || s.length() < 11)
+          return new ArrayList<>();
+
+        Map<String,Integer> map = new HashMap<>();
+        map.put(s.substring(0, 10), 1);
+        int left = 1;
+
+        for(int i = 10; i < s.length(); i++) {
+            String str = s.substring(left, i+1);
+            int occurrences = map.getOrDefault(str, 0);
+            map.put(str, occurrences+1);
+            left++;
+        }  
+        return map.entrySet()
+                  .stream()
+                  .filter(entry -> entry.getValue() > 1)
+                  .map(entry -> entry.getKey())
+                  .collect(Collectors.toList());
     }
 }
 ```
